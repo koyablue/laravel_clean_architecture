@@ -23,9 +23,19 @@ class MemoRepository implements MemoRepositoryInterface
         // TODO: Implement find() method.
     }
 
-    public function findUserMemo()
+    public function findUserMemo(int $userId): array
     {
-        // TODO: Implement findUserMemo() method.
+        $eloqMemo = $this->eloquentMemo;
+        $userMemoList = $eloqMemo::where('user_id', $userId)->get()->all();
+        $ret = [];
+        if(!empty($userMemoList)){
+            foreach($userMemoList as $userMemo){
+                $memo = new Memo($userMemo->id, $userId, $userMemo->content, $userMemo->created_at);
+                $ret[] = $memo;
+            }
+        }
+
+        return $ret;
     }
 
     public function save(Memo $memo): Memo
