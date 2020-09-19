@@ -1,0 +1,29 @@
+version: '2'
+services:
+  mysqldata:
+    image: busybox
+    volumes:
+      - ./docker/mysql/storage:/var/lib/mysql
+  mysql:
+    build: ./docker/mysql
+    volumes_from:
+      - mysqldata
+    ports:
+      - 13306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=app_db
+  php:
+    container_name: laravel_clean_php
+    build: ./docker/php
+    ports:
+      - 10204:80
+    volumes:
+      - .:/var/www/html
+    links:
+      - mysql
+  mailhog:
+    image: phpdockerio/mailhog:latest
+    ports:
+      - 11025:1025
+      - 18025:8025
