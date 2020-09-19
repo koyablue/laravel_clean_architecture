@@ -7,7 +7,7 @@ interface MemoRepositoryInterface
 
     public function findUserMemo();
 
-    public function save(Memo $memo, int $userId);
+    public function save(Memo $memo);
 
     public function delete();
 }

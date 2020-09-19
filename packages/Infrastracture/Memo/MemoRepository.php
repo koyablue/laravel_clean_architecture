@@ -28,18 +28,17 @@ class MemoRepository implements MemoRepositoryInterface
         // TODO: Implement findUserMemo() method.
     }
 
-    public function save(Memo $memo, int $userId): Memo
+    public function save(Memo $memo): Memo
     {
         $eloqMemo = new $this->eloquentMemo;
-        $eloqUser = EloquentUser::find($userId);
 
-        $eloqUser->memos()->save($eloqMemo->fill(
+        $eloqMemo->fill(
             [
                 'user_id' => $memo->getUserId(),
                 'content' => $memo->getContent()
-            ]));
+            ])->save();
 
-        return new Memo($eloqMemo->id, $eloqMemo->user_id, $eloqMemo->content, (string)$eloqMemo->created_at);
+        return new Memo($eloqMemo->id, $eloqMemo->user_id, $eloqMemo->content, $eloqMemo->created_at);
     }
 
     public function delete()

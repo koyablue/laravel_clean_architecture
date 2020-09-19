@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MemoCreateFormRequest;
 use App\Models\Memo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use packages\UseCase\Memo\Create\MemoCreateRequest;
+use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
 
 class MemoController extends Controller
 {
@@ -30,15 +33,15 @@ class MemoController extends Controller
 
     /**
      * 新規作成
-     * @param Request $request
+     * @param MemoCreateFormRequest $request
+     * @param MemoCreateUseCaseInterface $interactor
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function create(Request $request){
+    public function create(MemoCreateFormRequest $request, MemoCreateUseCaseInterface $interactor){
         $user = Auth::user();
-        $input = $request->get('content');
-        $memo = new Memo();
-        $user->Memos()->save(
-            $memo->fill(['content' => $input]));
+        $content = $request->get('content');
+        $memoCreateRequest = new MemoCreateRequest($user->id, $content);
+        $interactor->create($memoCreateRequest);
         return redirect(route('index'));
     }
 

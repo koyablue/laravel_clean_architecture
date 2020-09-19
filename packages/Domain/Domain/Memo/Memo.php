@@ -5,9 +5,9 @@ class Memo{
     private int $id;
     private int $userId;
     private string $content;
-    private string $createdAt;
+    private \DateTime $createdAt;
 
-    public function __construct(int $id, int $userId, string $content, string $createdAt)
+    public function __construct(int $id, int $userId, string $content, \DateTime $createdAt)
     {
         $this->id = $id;
         $this->userId = $userId;
