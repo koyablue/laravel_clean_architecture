@@ -15,7 +15,8 @@ class MemoController extends Controller
      * 一覧
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(){
+    public function index()
+    {
         $user = Auth::user();
         $memos = $user->memos;
         return view('index', compact('memos'));
@@ -26,7 +27,8 @@ class MemoController extends Controller
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($memoId){
+    public function show($memoId)
+    {
         $memo = Memo::find($memoId);
         return view('detail', compact('memo'));
     }
@@ -37,7 +39,8 @@ class MemoController extends Controller
      * @param MemoCreateUseCaseInterface $interactor
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function create(MemoCreateFormRequest $request, MemoCreateUseCaseInterface $interactor){
+    public function create(MemoCreateFormRequest $request, MemoCreateUseCaseInterface $interactor)
+    {
         $user = Auth::user();
         $content = $request->get('content');
         $memoCreateRequest = new MemoCreateRequest($user->id, $content);
@@ -50,7 +53,8 @@ class MemoController extends Controller
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($memoId){
+    public function edit($memoId)
+    {
         $memo = Memo::find($memoId);
         return view('edit', compact('memo'));
     }
@@ -61,7 +65,8 @@ class MemoController extends Controller
      * @param $memoId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $memoId){
+    public function update(Request $request, $memoId)
+    {
         $memo = Memo::find($memoId);
         $memo->fill(['content' => $request->get('content')])->save();
         return redirect(route('index'));
@@ -72,7 +77,8 @@ class MemoController extends Controller
      * @param $memoId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function delete($memoId){
+    public function delete($memoId)
+    {
         $memo = Memo::find($memoId);
         $memo->delete();
         return redirect(route('index'));
