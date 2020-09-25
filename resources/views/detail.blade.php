@@ -7,6 +7,6 @@
     <tr>
         <td>{{$memo->id}}</td>
         <td>{{$memo->content}}</td>
-        <td>{{$memo->created_at}}</td>
+        <td>{{$memo->createdAt}}</td>
     </tr>
 </table>

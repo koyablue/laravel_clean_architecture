@@ -4,32 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MemoCreateFormRequest;
 use App\Models\Memo;
+use App\Models\MemoDetailViewModel;
+use App\Models\MemoIndexViewModel;
+use App\Models\MemoViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use packages\UseCase\Memo\Create\MemoCreateRequest;
 use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
+use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
 
 class MemoController extends Controller
 {
     /**
      * 一覧
+     * @param MemoQueryServiceInterface $memoQueryService
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(MemoQueryServiceInterface $memoQueryService)
     {
         $user = Auth::user();
-        $memos = $user->memos;
-        return view('index', compact('memos'));
+        $memosFetchedByUserId = $memoQueryService->fetchUsersMemo($user->id);
+        $memoViewModels = [];
+        foreach ($memosFetchedByUserId as $memo){
+            $memoViewModels[] = new MemoViewModel($memo->getMemoId(), $memo->getContent());
+        }
+        $MemoIndexViewModel = new MemoIndexViewModel($memoViewModels);
+
+        return view('index', compact('MemoIndexViewModel'));
     }
 
     /**
      * 詳細表示
+     * @param MemoQueryServiceInterface $memoQueryService
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($memoId)
+    public function show(MemoQueryServiceInterface $memoQueryService, $memoId)
     {
-        $memo = Memo::find($memoId);
+        $memoDetailDto = $memoQueryService->findById($memoId);
+        $memo = new MemoDetailViewModel($memoDetailDto->getId(), $memoDetailDto->getContent(),
+            $memoDetailDto->getCreatedAt());
         return view('detail', compact('memo'));
     }
 
@@ -50,12 +64,13 @@ class MemoController extends Controller
 
     /**
      * 編集画面
+     * @param MemoQueryServiceInterface $memoQueryService
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($memoId)
+    public function edit(MemoQueryServiceInterface $memoQueryService, $memoId)
     {
-        $memo = Memo::find($memoId);
+        $memo = $memoQueryService->findById($memoId);
         return view('edit', compact('memo'));
     }
 

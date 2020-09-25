@@ -13,8 +13,8 @@
                         </button>
                     </form>
                     <table>
-                        @if($memos->isNotEmpty())
-                            @foreach($memos as $memo)
+                        @if(!empty($MemoIndexViewModel->memos))
+                            @foreach($MemoIndexViewModel->memos as $memo)
                                 <tr>
                                     <td>{{$memo->content}}</td>
                                     <td>
