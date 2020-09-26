@@ -28,11 +28,10 @@ class MemoController extends Controller
      */
     public function index(MemoQueryServiceInterface $memoQueryService)
     {
-        $memosFetchedByUserId = $memoQueryService->fetchUsersMemo();
-        $memoViewModels = [];
-        foreach ($memosFetchedByUserId as $memo){
-            $memoViewModels[] = new MemoViewModel($memo->getMemoId(), $memo->getContent());
-        }
+        $usersMemoDtoList = $memoQueryService->fetchUsersMemo();
+        $memoViewModels = array_map(function ($usersMemo){
+            return new MemoViewModel($usersMemo->getMemoId(), $usersMemo->getContent());
+        }, $usersMemoDtoList);
         $MemoIndexViewModel = new MemoIndexViewModel($memoViewModels);
 
         return view('index', compact('MemoIndexViewModel'));

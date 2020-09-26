@@ -7,6 +7,7 @@ use packages\Domain\Domain\Memo\Memo;
 use packages\UseCase\Memo\Dto\MemoDetailDto;
 use packages\UseCase\Memo\Dto\MemoEditDto;
 use packages\UseCase\Memo\Dto\MemoIndexDto;
+use packages\UseCase\Memo\Dto\UsersMemoDto;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
 use App\Models\Memo as EloqMemo;
 
@@ -16,15 +17,11 @@ class MemoQueryService implements MemoQueryServiceInterface
     {
         $userId = Auth::user()->id;
         $eloqMemoList = EloqMemo::where('user_id', $userId)->get()->all();
-        $ret = [];
-        if(!empty($eloqMemoList)){
-            foreach ($eloqMemoList as $memo){
-                $memoIndexDto = new MemoIndexDto($memo->id, $memo->content);
-                $ret[] = $memoIndexDto;
-            }
-        }
+        $usersMemoDtoList = array_map(function ($eloqMemo){
+            return new UsersMemoDto($eloqMemo->id, $eloqMemo->content, $eloqMemo->created_at);
+        }, $eloqMemoList);
 
-        return $ret;
+        return $usersMemoDtoList;
     }
 
     /**
