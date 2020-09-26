@@ -11,20 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function(){
-    Route::get('/index', 'MemoController@index')->name('index');
+    Route::get('/', 'MemoController@index')->name('index');
     Route::post('/create', 'MemoController@create')->name('create');
     Route::get('/show/{memoId}', 'MemoController@show')->name('show');
     Route::get('/edit/{memoId}', 'MemoController@edit')->name('edit');
     Route::post('/update/{memoId}', 'MemoController@update')->name('update');
-    Route::post('/delete/{memoId}', 'MemoController@delete')->name('delete');
+    Route::post('/Delete/{memoId}', 'MemoController@Delete')->name('Delete');
 });
 

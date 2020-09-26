@@ -1,7 +1,9 @@
 <?php
+
 namespace packages\Domain\Domain\Memo;
 
-class Memo{
+class Memo
+{
     private int $id;
     private int $userId;
     private string $content;
@@ -15,11 +17,23 @@ class Memo{
         $this->createdAt = $createdAt;
     }
 
-    public function getUserId(){
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getUserId()
+    {
         return $this->userId;
     }
 
-    public function getContent(){
+    public function getContent()
+    {
         return $this->content;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

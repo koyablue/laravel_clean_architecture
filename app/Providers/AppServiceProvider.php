@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use packages\Domain\Application\Memo\MemoCreateInteractor;
 use packages\Domain\Domain\Memo\MemoRepositoryInterface;
-use packages\Infrastracture\Memo\MemoQueryService;
-use packages\Infrastracture\Memo\MemoRepository;
+use packages\Infrastructure\Memo\MemoQueryService;
+use packages\Infrastructure\Memo\MemoRepository;
 use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
 

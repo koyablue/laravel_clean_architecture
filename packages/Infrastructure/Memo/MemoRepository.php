@@ -1,6 +1,6 @@
 <?php
 
-namespace packages\Infrastracture\Memo;
+namespace packages\Infrastructure\Memo;
 
 use packages\Domain\Domain\Memo\Memo;
 use packages\Domain\Domain\Memo\MemoRepositoryInterface;
@@ -29,7 +29,7 @@ class MemoRepository implements MemoRepositoryInterface
         $userMemoList = $eloqMemo::where('user_id', $userId)->get()->all();
         $ret = [];
         if(!empty($userMemoList)){
-            foreach($userMemoList as $userMemo){
+            foreach ($userMemoList as $userMemo){
                 $memo = new Memo($userMemo->id, $userId, $userMemo->content, $userMemo->created_at);
                 $ret[] = $memo;
             }
@@ -51,8 +51,15 @@ class MemoRepository implements MemoRepositoryInterface
         return new Memo($eloqMemo->id, $eloqMemo->user_id, $eloqMemo->content, $eloqMemo->created_at);
     }
 
-    public function delete()
+    public function update(int $memoId, string $content)
     {
-        // TODO: Implement delete() method.
+        $eloqMemo = $this->eloquentMemo::find($memoId);
+        $eloqMemo->fill(['content' => $content])->save();
+    }
+
+    public function delete(int $memoId)
+    {
+        $eloqMemo = $this->eloquentMemo::find($memoId);
+        $eloqMemo->delete();
     }
 }

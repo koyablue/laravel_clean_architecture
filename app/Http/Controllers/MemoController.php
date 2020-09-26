@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MemoCreateFormRequest;
+use App\Http\Requests\MemoUpdateFormRequest;
 use App\Models\Memo;
 use App\Models\MemoDetailViewModel;
+use App\Models\MemoEditViewModel;
 use App\Models\MemoIndexViewModel;
 use App\Models\MemoViewModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use packages\UseCase\Memo\Create\MemoCreateRequest;
 use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
+use packages\UseCase\Memo\Delete\MemoDeleteRequest;
+use packages\UseCase\Memo\Delete\MemoDeleteUseCaseInterface;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
+use packages\UseCase\Memo\Update\MemoUpdateRequest;
+use packages\UseCase\Memo\Update\MemoUpdateUseCaseInterface;
 
 class MemoController extends Controller
 {
@@ -22,8 +28,7 @@ class MemoController extends Controller
      */
     public function index(MemoQueryServiceInterface $memoQueryService)
     {
-        $user = Auth::user();
-        $memosFetchedByUserId = $memoQueryService->fetchUsersMemo($user->id);
+        $memosFetchedByUserId = $memoQueryService->fetchUsersMemo();
         $memoViewModels = [];
         foreach ($memosFetchedByUserId as $memo){
             $memoViewModels[] = new MemoViewModel($memo->getMemoId(), $memo->getContent());
@@ -41,7 +46,7 @@ class MemoController extends Controller
      */
     public function show(MemoQueryServiceInterface $memoQueryService, $memoId)
     {
-        $memoDetailDto = $memoQueryService->findById($memoId);
+        $memoDetailDto = $memoQueryService->getMemoDetail($memoId);
         $memo = new MemoDetailViewModel($memoDetailDto->getId(), $memoDetailDto->getContent(),
             $memoDetailDto->getCreatedAt());
         return view('detail', compact('memo'));
@@ -70,32 +75,41 @@ class MemoController extends Controller
      */
     public function edit(MemoQueryServiceInterface $memoQueryService, $memoId)
     {
-        $memo = $memoQueryService->findById($memoId);
+        $memoEditDto = $memoQueryService->getEditTarget($memoId);
+        $memo = new MemoEditViewModel($memoEditDto->getMemoId(), $memoEditDto->getContent());
         return view('edit', compact('memo'));
     }
 
     /**
      * 更新
-     * @param Request $request
+     * @param MemoQueryServiceInterface $memoQueryService
+     * @param MemoUpdateFormRequest $request
      * @param $memoId
+     * @param MemoUpdateUseCaseInterface $memoUpdateUseCase
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $memoId)
-    {
-        $memo = Memo::find($memoId);
-        $memo->fill(['content' => $request->get('content')])->save();
+    public function update(
+        MemoQueryServiceInterface $memoQueryService,
+        MemoUpdateFormRequest $request,
+        $memoId,
+        MemoUpdateUseCaseInterface $memoUpdateUseCase
+    ){
+        $memo = $memoQueryService->findById($memoId);
+        $memoUpdateRequest = new MemoUpdateRequest($memo->getId(), $request->get('content'));
+        $memoUpdateUseCase->update($memoUpdateRequest);
         return redirect(route('index'));
     }
 
     /**
      * 削除
+     * @param MemoDeleteUseCaseInterface $memoDeleteUseCase
      * @param $memoId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function delete($memoId)
+    public function delete(MemoDeleteUseCaseInterface $memoDeleteUseCase, $memoId)
     {
-        $memo = Memo::find($memoId);
-        $memo->delete();
+        $memoDeleteRequest = new MemoDeleteRequest($memoId);
+        $memoDeleteUseCase->delete($memoDeleteRequest);
         return redirect(route('index'));
     }
 }

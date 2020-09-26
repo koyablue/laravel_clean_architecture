@@ -24,7 +24,7 @@
                                         <button><a href="{{route('edit', ['memoId' => $memo->id])}}">edit</a></button>
                                     </td>
                                     <td>
-                                        <form method="POST" action="{{route('delete', ['memoId' => $memo->id])}}">
+                                        <form method="POST" action="{{route('Delete', ['memoId' => $memo->id])}}">
                                             <button type="submit">delete</button>
                                         </form>
                                     </td>

@@ -9,5 +9,7 @@ interface MemoRepositoryInterface
 
     public function save(Memo $memo);
 
-    public function delete();
+    public function update(int $memoId, string $content);
+
+    public function delete(int $memoId);
 }
