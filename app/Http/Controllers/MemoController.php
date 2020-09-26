@@ -101,14 +101,14 @@ class MemoController extends Controller
 
     /**
      * 削除
-     * @param MemoDeleteUseCaseInterface $memoDeleteUseCase
+     * @param MemoDeleteUseCaseInterface $memoDeleteInteractor
      * @param $memoId
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function delete(MemoDeleteUseCaseInterface $memoDeleteUseCase, $memoId)
+    public function delete(MemoDeleteUseCaseInterface $memoDeleteInteractor, $memoId)
     {
         $memoDeleteRequest = new MemoDeleteRequest($memoId);
-        $memoDeleteUseCase->delete($memoDeleteRequest);
+        $memoDeleteInteractor->delete($memoDeleteRequest);
         return redirect(route('index'));
     }
 }

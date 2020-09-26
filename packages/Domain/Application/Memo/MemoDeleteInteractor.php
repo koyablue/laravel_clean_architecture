@@ -16,6 +16,6 @@ class MemoDeleteInteractor implements MemoDeleteUseCaseInterface
 
     public function delete(MemoDeleteRequest $memoDeleteRequest)
     {
-
+        $this->memoRepository->delete($memoDeleteRequest->getMemoId());
     }
 }

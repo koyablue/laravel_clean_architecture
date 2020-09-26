@@ -19,6 +19,6 @@ class MemoCreateInteractor implements MemoCreateUseCaseInterface
     public function create(MemoCreateRequest $request)
     {
         $memo = new Memo(mt_rand(), $request->getUserId(), $request->getContent(), Carbon::now());
-        $createdMemo = $this->memoRepository->save($memo);
+        return $this->memoRepository->save($memo);
     }
 }
