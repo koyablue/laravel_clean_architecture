@@ -8,7 +8,7 @@ use packages\UseCase\Memo\Dto\MemoEditDto;
 
 interface MemoQueryServiceInterface
 {
-    public function fetchUsersMemo(): array;
+    public function fetchUsersMemo(int $userId): array;
 
     public function getMemoDetail(int $memoId): MemoDetailDto;
 

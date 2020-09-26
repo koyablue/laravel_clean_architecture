@@ -13,9 +13,8 @@ use App\Models\Memo as EloqMemo;
 
 class MemoQueryService implements MemoQueryServiceInterface
 {
-    public function fetchUsersMemo(): array
+    public function fetchUsersMemo($userId): array
     {
-        $userId = Auth::user()->id;
         $eloqMemoList = EloqMemo::where('user_id', $userId)->get()->all();
         $usersMemoDtoList = array_map(function ($eloqMemo){
             return new UsersMemoDto($eloqMemo->id, $eloqMemo->content, $eloqMemo->created_at);

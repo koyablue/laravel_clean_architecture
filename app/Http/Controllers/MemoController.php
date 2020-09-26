@@ -28,7 +28,8 @@ class MemoController extends Controller
      */
     public function index(MemoQueryServiceInterface $memoQueryService)
     {
-        $usersMemoDtoList = $memoQueryService->fetchUsersMemo();
+        $userId = Auth::user()->id;
+        $usersMemoDtoList = $memoQueryService->fetchUsersMemo($userId);
         $memoViewModels = array_map(function ($usersMemo){
             return new MemoViewModel($usersMemo->getMemoId(), $usersMemo->getContent());
         }, $usersMemoDtoList);
@@ -59,9 +60,9 @@ class MemoController extends Controller
      */
     public function create(MemoCreateFormRequest $request, MemoCreateUseCaseInterface $interactor)
     {
-        $user = Auth::user();
+        $userId = Auth::user()->id;
         $content = $request->get('content');
-        $memoCreateRequest = new MemoCreateRequest($user->id, $content);
+        $memoCreateRequest = new MemoCreateRequest($userId, $content);
         $interactor->create($memoCreateRequest);
         return redirect(route('index'));
     }
