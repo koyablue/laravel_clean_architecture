@@ -15,7 +15,7 @@
                                 <input type="text" class="form-control" name="content">
                             </div>
                             <div class="text-right">
-                                <button type="submit"class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary">
                                     create
                                 </button>
                             </div>
