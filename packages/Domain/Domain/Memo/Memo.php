@@ -9,6 +9,13 @@ class Memo
     private string $content;
     private \DateTime $createdAt;
 
+    /**
+     * Memo constructor.
+     * @param int $id
+     * @param int $userId
+     * @param string $content
+     * @param \DateTime $createdAt
+     */
     public function __construct(int $id, int $userId, string $content, \DateTime $createdAt)
     {
         $this->id = $id;
@@ -17,22 +24,34 @@ class Memo
         $this->createdAt = $createdAt;
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getUserId()
+    /**
+     * @return int
+     */
+    public function getUserId(): int
     {
         return $this->userId;
     }
 
-    public function getContent()
+    /**
+     * @return string
+     */
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function getCreatedAt()
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

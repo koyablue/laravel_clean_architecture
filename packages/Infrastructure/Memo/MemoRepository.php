@@ -5,7 +5,6 @@ namespace packages\Infrastructure\Memo;
 use packages\Domain\Domain\Memo\Memo;
 use packages\Domain\Domain\Memo\MemoRepositoryInterface;
 use App\Models\Memo as EloqMemo;
-use App\Models\User as EloqUser;
 
 class MemoRepository implements MemoRepositoryInterface
 {

@@ -2,17 +2,19 @@
 
 namespace packages\Infrastructure\Memo;
 
-use Illuminate\Support\Facades\Auth;
 use packages\Domain\Domain\Memo\Memo;
 use packages\UseCase\Memo\Dto\MemoDetailDto;
 use packages\UseCase\Memo\Dto\MemoEditDto;
-use packages\UseCase\Memo\Dto\MemoIndexDto;
 use packages\UseCase\Memo\Dto\UsersMemoDto;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
 use App\Models\Memo as EloqMemo;
 
 class MemoQueryService implements MemoQueryServiceInterface
 {
+    /**
+     * @param int $userId
+     * @return array
+     */
     public function fetchUsersMemo($userId): array
     {
         $eloqMemoList = EloqMemo::where('user_id', $userId)->get()->all();
@@ -43,6 +45,10 @@ class MemoQueryService implements MemoQueryServiceInterface
         return new MemoEditDto($eloqMemoModel->id, $eloqMemoModel->content);
     }
 
+    /**
+     * @param int $memoId
+     * @return Memo
+     */
     public function findById(int $memoId): Memo
     {
         $eloqMemoModel = EloqMemo::find($memoId);
