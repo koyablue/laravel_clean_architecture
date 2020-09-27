@@ -9,8 +9,6 @@ use packages\Domain\Application\Memo\MemoUpdateInteractor;
 use packages\Domain\Domain\Memo\MemoRepositoryInterface;
 use packages\Infrastructure\Memo\MemoQueryService;
 use packages\Infrastructure\Memo\MemoRepository;
-use packages\Mock\Interactor\MockMemoCreateInteractor;
-use packages\Mock\MockMemoRepository;
 use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
 use packages\UseCase\Memo\Delete\MemoDeleteUseCaseInterface;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
