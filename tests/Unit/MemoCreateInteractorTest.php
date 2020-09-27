@@ -3,21 +3,26 @@
 namespace Tests\Unit;
 
 use packages\Domain\Application\Memo\MemoCreateInteractor;
-use packages\Mock\MockMemoRepository;
+use packages\Infrastructure\Memo\MemoRepository;
 use packages\UseCase\Memo\Create\MemoCreateRequest;
-use PHPUnit\Framework\TestCase;
+use Tests\Base\TestBase;
 
-class MemoCreateInteractorTest extends TestCase
+class MemoCreateInteractorTest extends TestBase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testMemoCreate()
     {
-        $userId = mt_rand(1, 100);
+        $userId = $this->user->id;
         $str = null;
         for ($i = 0; $i < 10; $i++){
             $str .= chr(mt_rand(97, 122));
         }
         $content = $str;
-        $repository = new MockMemoRepository();
+        $repository = new MemoRepository();
         $memoCreateRequest = new MemoCreateRequest($userId, $content);
         $interactor = new MemoCreateInteractor($repository);
         $createdMemo = $interactor->create($memoCreateRequest);
