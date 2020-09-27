@@ -12,9 +12,6 @@
 */
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/', 'MemoController@index')->name('index');
     Route::post('/create', 'MemoController@create')->name('create');
