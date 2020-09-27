@@ -1,3 +1,6 @@
+This is a sample app implemented by Laravel that is following clean architecture ideas.
+
+## version
 PHP 7.4.4  
 Laravel 6.18.40  
 
