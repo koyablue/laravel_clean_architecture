@@ -10,6 +10,8 @@ use Tests\TestCase;
 
 class TestBase extends TestCase
 {
+    use RefreshDatabase;
+
     protected User $user;
     protected function setUp(): void
     {

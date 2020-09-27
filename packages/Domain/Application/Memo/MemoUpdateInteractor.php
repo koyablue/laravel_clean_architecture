@@ -1,6 +1,7 @@
 <?php
 namespace packages\Domain\Application\Memo;
 
+use packages\Domain\Domain\Memo\Memo;
 use packages\Domain\Domain\Memo\MemoRepositoryInterface;
 use packages\UseCase\Memo\Update\MemoUpdateRequest;
 use packages\UseCase\Memo\Update\MemoUpdateUseCaseInterface;
@@ -14,8 +15,8 @@ class MemoUpdateInteractor implements MemoUpdateUseCaseInterface
         $this->memoRepository = $memoRepository;
     }
 
-    public function update(MemoUpdateRequest $memoUpdateRequest)
+    public function update(MemoUpdateRequest $memoUpdateRequest): Memo
     {
-        $this->memoRepository->update($memoUpdateRequest->getMemoId(), $memoUpdateRequest->getContent());
+        return $this->memoRepository->update($memoUpdateRequest->getMemoId(), $memoUpdateRequest->getContent());
     }
 }

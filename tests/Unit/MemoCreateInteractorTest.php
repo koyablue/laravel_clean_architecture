@@ -9,11 +9,6 @@ use Tests\Base\TestBase;
 
 class MemoCreateInteractorTest extends TestBase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testMemoCreate()
     {
         $userId = $this->user->id;
