@@ -18,11 +18,11 @@
         </whitelist>
     </filter>
     <php>
-        <server name="APP_ENV" value="testing"/>
+<!--        <server name="APP_ENV" value="testing"/>-->
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
-        <server name="DB_CONNECTION" value="sqlite_for_testing"/>
-        <server name="DB_DATABASE" value=":memory:"/>
+        <server name="DB_CONNECTION" value="sqlite_for_testing" force="true"/>
+        <server name="DB_DATABASE" value=":memory:" force="true"/>
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
