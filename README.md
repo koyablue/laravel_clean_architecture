@@ -1,5 +1,5 @@
-PHP 7.4.4
-Laravel 6.18.40
+PHP 7.4.4  
+Laravel 6.18.40  
 
 ## Getting started
 1. docker-compose build
@@ -8,5 +8,5 @@ Laravel 6.18.40
 4. php artisan db:seed --class=DatabaseSeeder
 
 ## Default user
-e-mail: sampleUser01@example.com
-password: sampleUser01
+e-mail: sampleUser01@example.com  
+password: sampleUser01  
