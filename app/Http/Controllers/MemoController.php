@@ -15,7 +15,11 @@ use packages\UseCase\Memo\Create\MemoCreateRequest;
 use packages\UseCase\Memo\Create\MemoCreateUseCaseInterface;
 use packages\UseCase\Memo\Delete\MemoDeleteRequest;
 use packages\UseCase\Memo\Delete\MemoDeleteUseCaseInterface;
+use packages\UseCase\Memo\Index\MemoIndexRequest;
+use packages\UseCase\Memo\Index\MemoIndexUseCaseInterface;
 use packages\UseCase\Memo\QueryService\MemoQueryServiceInterface;
+use packages\UseCase\Memo\Show\MemoDetailRequest;
+use packages\UseCase\Memo\Show\MemoDetailUseCaseInterface;
 use packages\UseCase\Memo\Update\MemoUpdateRequest;
 use packages\UseCase\Memo\Update\MemoUpdateUseCaseInterface;
 
@@ -23,13 +27,16 @@ class MemoController extends Controller
 {
     /**
      * 一覧
-     * @param MemoQueryServiceInterface $memoQueryService
+     * @param MemoIndexUseCaseInterface $interactor
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(MemoQueryServiceInterface $memoQueryService)
+    public function index(MemoIndexUseCaseInterface $interactor)
     {
         $userId = Auth::user()->id;
-        $usersMemoDtoList = $memoQueryService->fetchUsersMemo($userId);
+
+        $memoIndexRequest = new MemoIndexRequest($userId);
+        $usersMemoDtoList = $interactor->getMemoList($memoIndexRequest);
+
         $memoViewModels = array_map(function ($usersMemo){
             return new MemoViewModel($usersMemo->getMemoId(), $usersMemo->getContent());
         }, $usersMemoDtoList);
@@ -40,13 +47,15 @@ class MemoController extends Controller
 
     /**
      * 詳細表示
-     * @param MemoQueryServiceInterface $memoQueryService
+     * @param MemoDetailUseCaseInterface $interactor
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(MemoQueryServiceInterface $memoQueryService, $memoId)
+    public function show(MemoDetailUseCaseInterface $interactor, int $memoId)
     {
-        $memoDetailDto = $memoQueryService->getMemoDetail($memoId);
+        $memoDetailRequest = new MemoDetailRequest($memoId);
+        $memoDetailDto = $interactor->getMemoDetail($memoDetailRequest);
+
         $memo = new MemoDetailViewModel($memoDetailDto->getId(), $memoDetailDto->getContent(),
             $memoDetailDto->getCreatedAt());
         return view('detail', compact('memo'));
@@ -73,7 +82,7 @@ class MemoController extends Controller
      * @param $memoId
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit(MemoQueryServiceInterface $memoQueryService, $memoId)
+    public function edit(MemoQueryServiceInterface $memoQueryService, int $memoId)
     {
         $memoEditDto = $memoQueryService->getEditTarget($memoId);
         $memo = new MemoEditViewModel($memoEditDto->getMemoId(), $memoEditDto->getContent());

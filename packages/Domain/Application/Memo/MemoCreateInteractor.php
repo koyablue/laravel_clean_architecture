@@ -1,4 +1,5 @@
 <?php
+
 namespace packages\Domain\Application\Memo;
 
 use Carbon\Carbon;
@@ -11,12 +12,20 @@ class MemoCreateInteractor implements MemoCreateUseCaseInterface
 {
     private MemoRepositoryInterface $memoRepository;
 
+    /**
+     * MemoCreateInteractor constructor.
+     * @param MemoRepositoryInterface $memoRepository
+     */
     public function __construct(MemoRepositoryInterface $memoRepository)
     {
         $this->memoRepository = $memoRepository;
     }
 
-    public function create(MemoCreateRequest $request)
+    /**
+     * @param MemoCreateRequest $request
+     * @return Memo
+     */
+    public function create(MemoCreateRequest $request): Memo
     {
         $memo = new Memo(mt_rand(), $request->getUserId(), $request->getContent(), Carbon::now());
         return $this->memoRepository->save($memo);
